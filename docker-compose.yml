@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  ros:
+    image: wetlettuce/robot
+    privileged: true
+    network_mode: host
+    volumes:
+      - /dev:/dev
+      - /run/udev/:/run/udev/
+    group_add:
+      - video
+    environment:
+      - HOME=/tpm
+    stdin_open: true    # equivalent to -i (interactive)
+    tty: true           # equivalent to -t (tty)
+
