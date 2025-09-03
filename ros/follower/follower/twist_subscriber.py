@@ -39,15 +39,16 @@ class TwistSubscriber(Node):
         linear_y = int((msg.linear.y * self.speed_mult * 127) / self.max_counts_per_second)
         angular_z = int((msg.angular.z * self.speed_mult * 127) / self.max_counts_per_second)
 
-        fitted = lambda a : min(max(a, -127), 127)
+        def fitted(a):
+            return min(max(a, -127), 127)
 
         linear_x = fitted(linear_x)
         linear_y = fitted(linear_y)
         angular_z = fitted(angular_z)
 
-        linear_x_byte: bytes = int(linear_x).to_bytes(1, 'big',  signed=True) 
-        linear_y_byte: bytes = int(linear_y).to_bytes(1, 'big',  signed=True) 
-        angular_z_byte: bytes = int(angular_z).to_bytes(1, 'big',  signed=True) 
+        linear_x_byte: bytes = int(linear_x).to_bytes(1, 'big', signed=True) 
+        linear_y_byte: bytes = int(linear_y).to_bytes(1, 'big', signed=True) 
+        angular_z_byte: bytes = int(angular_z).to_bytes(1, 'big', signed=True) 
 
         self.ser.write(self.START_FLAG + self.DRIVE_REQUEST + linear_x_byte + linear_y_byte + angular_z_byte)
 
